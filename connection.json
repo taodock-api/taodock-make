@@ -1,0 +1,29 @@
+{
+  "type": "basic",
+  "parameters": [
+    {
+      "name": "apiKey",
+      "type": "password",
+      "label": "API Key",
+      "help": "Your Taodock API key (sk-...). Create one at https://taodock.com — it is stored by Make and only sent to the Taodock API.",
+      "editable": true,
+      "required": true
+    }
+  ],
+  "communication": {
+    "url": "https://taodock.com/v1/models",
+    "method": "GET",
+    "headers": {
+      "Authorization": "Bearer {{parameters.apiKey}}"
+    },
+    "response": {
+      "valid": "{{statusCode === 200}}",
+      "error": {
+        "message": "[{{statusCode}}] {{body.error.message || body.message}}"
+      }
+    },
+    "log": {
+      "sanitize": ["request.headers.Authorization"]
+    }
+  }
+}

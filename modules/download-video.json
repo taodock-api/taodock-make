@@ -1,0 +1,38 @@
+{
+  "name": "downloadVideo",
+  "label": "Download Video",
+  "description": "Download a completed Taodock video as a binary file. The task must be completed — check with Get Video Status first.",
+  "type": "action",
+  "connection": "apiKey",
+  "communication": {
+    "url": "/videos/{{parameters.taskId}}/content",
+    "method": "GET",
+    "response": {
+      "output": {
+        "fileName": "{{concat(\"taodock-\", parameters.taskId, \".mp4\")}}",
+        "data": "{{body}}"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "taskId",
+      "type": "text",
+      "label": "Task ID",
+      "help": "The task ID of a completed video.",
+      "required": true
+    }
+  ],
+  "interface": [
+    {
+      "name": "fileName",
+      "type": "filename",
+      "label": "File Name"
+    },
+    {
+      "name": "data",
+      "type": "buffer",
+      "label": "Video File"
+    }
+  ]
+}

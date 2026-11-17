@@ -1,0 +1,24 @@
+{
+  "name": "listModels",
+  "label": "List Models",
+  "description": "List the Taodock model IDs available to the connected API key.",
+  "type": "search",
+  "connection": "apiKey",
+  "communication": {
+    "url": "/models",
+    "method": "GET",
+    "limit": 100,
+    "iterate": "{{body.data}}",
+    "output": {
+      "id": "{{item.id}}"
+    }
+  },
+  "parameters": [],
+  "interface": [
+    {
+      "name": "id",
+      "type": "text",
+      "label": "Model ID"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "taodock-make",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Taodock custom app for Make.com (IML definitions).",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/validate.test.mjs"
+  }
+}

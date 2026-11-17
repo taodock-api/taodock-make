@@ -1,0 +1,80 @@
+{
+  "name": "createVideo",
+  "label": "Create Video",
+  "description": "Start an asynchronous Taodock video generation task and return its task ID. Poll with Get Video Status, then use Download Video once completed.",
+  "type": "action",
+  "connection": "apiKey",
+  "communication": {
+    "url": "/videos",
+    "method": "POST",
+    "body": {
+      "model": "{{parameters.model}}",
+      "prompt": "{{parameters.prompt}}",
+      "duration": "{{if(parameters.duration > 0; parameters.duration; ignore)}}",
+      "resolution": "{{ifempty(parameters.resolution; ignore; parameters.resolution)}}",
+      "aspect_ratio": "{{ifempty(parameters.aspectRatio; ignore; parameters.aspectRatio)}}",
+      "negative_prompt": "{{ifempty(parameters.negativePrompt; ignore; parameters.negativePrompt)}}"
+    },
+    "response": {
+      "output": {
+        "task_id": "{{body.id || body.task_id}}",
+        "status": "{{body.status}}"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "model",
+      "type": "text",
+      "label": "Model",
+      "help": "Video model ID, e.g. agnes-video-2.5. Run List Models to discover IDs.",
+      "required": true
+    },
+    {
+      "name": "prompt",
+      "type": "text",
+      "label": "Prompt",
+      "required": true
+    },
+    {
+      "name": "duration",
+      "type": "uinteger",
+      "label": "Duration (seconds)",
+      "help": "Optional video length in seconds. 0 uses the model default."
+    },
+    {
+      "name": "resolution",
+      "type": "text",
+      "label": "Resolution",
+      "help": "Optional, e.g. 1080p."
+    },
+    {
+      "name": "aspectRatio",
+      "type": "text",
+      "label": "Aspect Ratio",
+      "help": "Optional, e.g. 16:9."
+    },
+    {
+      "name": "negativePrompt",
+      "type": "text",
+      "label": "Negative Prompt",
+      "help": "Optional: what to avoid in the video."
+    }
+  ],
+  "interface": [
+    {
+      "name": "task_id",
+      "type": "text",
+      "label": "Task ID"
+    },
+    {
+      "name": "status",
+      "type": "text",
+      "label": "Status"
+    }
+  ],
+  "samples": {
+    "model": "agnes-video-2.5",
+    "prompt": "A timelapse of clouds moving over a mountain ridge"
+  }
+}

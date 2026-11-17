@@ -1,0 +1,82 @@
+{
+  "name": "generateImage",
+  "label": "Generate Image",
+  "description": "Generate one or more images from a text prompt with a Taodock image model.",
+  "type": "action",
+  "connection": "apiKey",
+  "communication": {
+    "url": "/images/generations",
+    "method": "POST",
+    "body": {
+      "model": "{{parameters.model}}",
+      "prompt": "{{parameters.prompt}}",
+      "response_format": "b64_json",
+      "n": "{{if(parameters.count > 1; parameters.count; ignore)}}",
+      "size": "{{ifempty(parameters.size; ignore; parameters.size)}}",
+      "aspect_ratio": "{{ifempty(parameters.aspectRatio; ignore; parameters.aspectRatio)}}"
+    },
+    "response": {
+      "output": {
+        "images": "{{body.data}}"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "model",
+      "type": "text",
+      "label": "Model",
+      "help": "Image model ID, e.g. agnes-image-2.5-flash. Run List Models to discover IDs.",
+      "required": true
+    },
+    {
+      "name": "prompt",
+      "type": "text",
+      "label": "Prompt",
+      "required": true
+    },
+    {
+      "name": "size",
+      "type": "text",
+      "label": "Size",
+      "help": "Optional, e.g. 1024x1024. Leave empty for the model default."
+    },
+    {
+      "name": "aspectRatio",
+      "type": "text",
+      "label": "Aspect Ratio",
+      "help": "Optional, e.g. 16:9. Leave empty for the model default."
+    },
+    {
+      "name": "count",
+      "type": "uinteger",
+      "label": "Number of Images",
+      "help": "1-4, defaults to 1.",
+      "default": 1
+    }
+  ],
+  "interface": [
+    {
+      "name": "images",
+      "type": "collection",
+      "label": "Images",
+      "spec": [
+        {
+          "name": "b64_json",
+          "type": "text",
+          "label": "Image (base64)"
+        },
+        {
+          "name": "url",
+          "type": "url",
+          "label": "Image URL"
+        }
+      ]
+    }
+  ],
+  "samples": {
+    "model": "agnes-image-2.5-flash",
+    "prompt": "A red fox walking through a snowy forest, cinematic lighting",
+    "count": 1
+  }
+}
